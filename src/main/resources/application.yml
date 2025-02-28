@@ -1,0 +1,61 @@
+spring:
+  jackson:
+    default-property-inclusion: NON_EMPTY
+  profiles:
+    active: dev
+  application:
+    name: BookingSystem
+  cache:
+    redis:
+      enable-statistics: true
+    type: redis
+    cache-names: unit
+  jpa:
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc.time_zone: UTC
+        order_inserts: true
+        order_updates: true
+        query.fail_on_pagination_over_collection_fetch: true
+        query.in_clause_parameter_padding: true
+        connection.provider_disables_autocommit: true
+        query.plan_cache_max_size: 4096
+        id.new_generator_mappings: true
+        jdbc.lob.non_contextual_creation: true
+        jdbc:
+          fetch_size: 100
+        cache.use_second_level_cache: true
+        cache.use_query_cache: true
+        cache.use_minimal_puts: true
+        cache.region.factory_class: org.redisson.hibernate.RedissonRegionFactory
+        cache.redisson.config: redisson-dev.yaml
+    hibernate:
+      ddl-auto: none
+  datasource:
+    hikari:
+      auto-commit: false
+      connection-timeout: 30000
+      maximum-pool-size: 40
+      minimum-idle: 5
+      max-lifetime: 1800000
+      pool-name: bookingconnect
+      leak-detection-threshold: 20000
+  liquibase:
+    change-log: classpath:liquibase/master.xml
+    enabled: true
+    drop-first: true
+    contexts: dev
+
+  config:
+    activate:
+      on-profile: dev
+
+server:
+  port: 8080
+  shutdown: graceful
+
+application:
+  webclient:
+    response-timeout: 2000

@@ -1,0 +1,145 @@
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+
+plugins {
+	id 'java'
+	id 'idea'
+	id 'distribution'
+	alias libs.plugins.springBoot
+	alias libs.plugins.jacocolog
+	alias libs.plugins.sonar
+	alias libs.plugins.openApiGeneratorVersion
+}
+
+ext {
+	minimumCoveragePerFile = 0.8
+	filesExcludedFromCoverage = [
+			"**/XssRequestWebFilter.*",
+			"**/*Application.*",
+			"**/config/*Configuration.*",
+			"**/constants/*Constants.*",
+			"**/generated/**/*.*",
+			"**/repository/entity/*.*",
+			"**/util/*.*",
+			"**/exception/*Exception*.*",
+			"**/domain/**.*",
+			"**/*Builder.*",
+	]
+}
+
+apply from: "${rootProject.projectDir}/gradle/test.gradle"
+apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
+
+group = 'com.testtask.bookingsystem'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation(libs.spring.boot.starter.web) {
+		exclude module: "spring-boot-starter-tomcat"
+	}
+	implementation libs.spring.boot.starter.validation
+	implementation libs.spring.boot.starter.cache
+	implementation libs.spring.boot.starter.data.jpa
+	implementation libs.spring.boot.retry
+	implementation libs.commons.lang3
+	implementation libs.commons.io
+	implementation libs.swagger.annotations
+	implementation libs.validation.api
+	implementation libs.mapstruct.core
+	implementation libs.liquibase.core
+	implementation libs.postgresql
+	implementation libs.recordbuildercore
+	implementation libs.recordbuilderprocessor
+	implementation libs.redisson.spring
+	implementation libs.redisson.hibernate53
+	implementation libs.jackson.databind.nullable
+	implementation libs.javax.annotation.api
+	implementation libs.jackson.datatype.jsr310
+
+	compileOnly libs.lombok
+	compileOnly libs.recordbuildercore
+	compileOnly libs.recordbuilderprocessor
+
+	annotationProcessor libs.lombok
+	annotationProcessor libs.mapstruct.processor
+	annotationProcessor libs.spring.boot.configuration.processor
+	annotationProcessor libs.recordbuildercore
+	annotationProcessor libs.recordbuilderprocessor
+
+	testImplementation libs.spring.boot.starter.test
+	testImplementation libs.spring.security.test
+	testImplementation libs.testcontainers.core
+	testImplementation libs.testcontainers.junit.jupiter
+	testImplementation libs.wiremock.jre8
+	testImplementation libs.testcontainers.core
+	testImplementation libs.testcontainers.junit.jupiter
+	testImplementation libs.testcontainers.postgresql
+	testImplementation libs.wiremock.jre8
+	testImplementation libs.mockwebserver
+	testImplementation libs.assertj.core
+	testCompileOnly libs.lombok
+	testAnnotationProcessor libs.lombok
+}
+
+// OneApi docs generation
+ext {
+	oneApiConfigOptions = [
+			generateApis: "true",
+			generateModels: "true",
+			interfaceOnly: "true",
+			serializableModel: "true",
+			skipDefaultInterface: "true",
+			useSpringBoot3: "true"
+	]
+	oneApiGlobalProperties = [
+			apis: "",
+			models: ""
+	]
+}
+
+task generateServiceApi(type: GenerateTask) {
+	generatorName = "spring"
+	validateSpec = true
+	inputSpec = "$rootDir/src/main/resources/booking-openapi.yaml"
+	outputDir = "$rootDir".toString()
+	modelPackage = "com.bookingsystem.model.generated"
+	apiPackage = "com.bookingsystem.controller.generated"
+	globalProperties.set(oneApiGlobalProperties)
+	configOptions.set(oneApiConfigOptions)
+}
+
+tasks.compileJava {
+	dependsOn tasks.generateServiceApi
+}
+
+//Zip
+distributions {
+	main {
+		contents {
+			from("${buildDir}/libs") {
+				into 'libs'
+			}
+			from('src') {
+				into 'src'
+			}
+			from('.') {
+				include 'build.gradle', 'README.md', 'Dockerfile'
+			}
+		}
+	}
+}

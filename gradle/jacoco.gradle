@@ -1,0 +1,58 @@
+apply plugin: 'jacoco'
+
+jacoco {
+   toolVersion = "0.8.12"
+   reportsDirectory = layout.buildDirectory.dir("reports/coverage")
+}
+
+task integrationTest(type: Test) {
+    filter {
+        includeTestsMatching '*IT'
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            enabled = true
+            element = 'SOURCEFILE'
+            excludes = filesExcludedFromCoverage
+            limit {
+                counter = 'LINE'
+                minimum = minimumCoveragePerFile
+            }
+        }
+    }
+}
+
+jacocoTestReport {
+    getExecutionData().setFrom(fileTree(buildDir).include("/jacoco/*.exec"))
+    reports {
+        csv.required = true
+        xml.required = false
+        html.required = true
+        xml.outputLocation = file("${buildDir}/reports/coverage/coverage.xml")
+        html.outputLocation = layout.buildDirectory.dir("$buildDir/reports/coverage")
+        csv.outputLocation = file("${buildDir}/reports/coverage/coverage.csv")
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: filesExcludedFromCoverage)
+        }))
+    }
+    finalizedBy jacocoTestCoverageVerification
+}
+
+test {
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+integrationTest {
+    doFirst {
+        delete testResultsDir
+        delete "$buildDir/jacoco/"
+    }
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+jacocoTestCoverageVerification.mustRunAfter jacocoTestReport
