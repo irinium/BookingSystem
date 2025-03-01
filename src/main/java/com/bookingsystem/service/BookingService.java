@@ -8,7 +8,6 @@ import com.bookingsystem.repository.BookingRepository;
 import com.bookingsystem.repository.UnitRepository;
 import com.bookingsystem.repository.entity.BookingEntity;
 import com.bookingsystem.repository.entity.UnitEntity;
-import com.bookingsystem.utils.ConversionUtils;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,15 +25,18 @@ import static com.bookingsystem.utils.ConversionUtils.parseStringToLong;
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class BookingService {
-    private UnitRepository unitRepository;
-    private BookingRepository bookingRepository;
+
+    private final UnitRepository unitRepository;
+    private final BookingRepository bookingRepository;
+    private final EventService eventService;
 
     public MessageResponse bookUnit(String unitId, String userId, LocalDate bookingStartDate, LocalDate bookingEndDate) {
         try {
             processBooking(unitId, userId, bookingStartDate, bookingEndDate);
             markUnitAsRented(unitId);
             String message = String.format("Successfully booked unit with id %s for dates from %s till %s", unitId, bookingStartDate, bookingEndDate);
-            return ConversionUtils.createResponse(message, 200);
+            eventService.logEvent("BOOKING_CREATED", message);
+            return createResponse(message, 200);
         } catch (RuntimeException e) {
             return new MessageResponse().message(e.getMessage()).status(400);
         }
@@ -51,7 +53,7 @@ public class BookingService {
         int overlappingCount = bookingRepository.countOverlappingBookings(parsedUnitId, bookingStartDate, bookingEndDate);
         if (overlappingCount > 0) {
             log.warn("There is an overlapping booking, so the unit is not available");
-            throw new UnitNotAvailableException(String.format("Unit with id %s is not available for iven dates from %s till %s", parsedUnitId, bookingStartDate, bookingEndDate));
+            throw new UnitNotAvailableException(String.format("Unit with id %s is not available for given dates from %s till %s", parsedUnitId, bookingStartDate, bookingEndDate));
         }
 
         BookingEntity booking = new BookingEntity();
@@ -69,6 +71,7 @@ public class BookingService {
             if (cancelled) {
                 markUnitAsAvailable(unitId);
                 String message = String.format("Successfully cancelled booking for unit %s", unitId);
+                eventService.logEvent("BOOKING_CANCELLED", message);
                 return createResponse(message, 200);
             } else {
                 return createResponse("Cancellation failed", 400);
@@ -81,7 +84,6 @@ public class BookingService {
     }
 
     public boolean processCancelingBooking(String unitId, String userId) {
-
         Optional<BookingEntity> booking = bookingRepository.findByUnitIdAndUserId(parseStringToLong(unitId), parseStringToLong(userId));
         if (booking.isEmpty()) {
             log.warn("No active booking found for unit {} and user {}", unitId, userId);

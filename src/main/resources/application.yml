@@ -75,6 +75,6 @@ springdoc:
 
 logging:
   level:
-    root: DEBUG
-    com.bookingsystem: DEBUG
-    org.springframework: DEBUG
+    root: INFO
+    com.bookingsystem: INFO
+    org.springframework: INFO

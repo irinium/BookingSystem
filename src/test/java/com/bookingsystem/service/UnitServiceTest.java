@@ -32,6 +32,9 @@ public class UnitServiceTest {
     @Mock
     private UnitMapper unitMapper;
 
+    @Mock
+    private EventService eventService;
+
     @InjectMocks
     private UnitService unitService;
 

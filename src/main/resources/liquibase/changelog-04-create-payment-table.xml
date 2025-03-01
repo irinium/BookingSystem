@@ -1,21 +1,28 @@
-<changeSet id="create_table_payment" author="irynashvets">
-    <comment>Create the 'payment' table</comment>
-    <createSequence sequenceName="payment_seq" startValue="1"/>
-    <createTable tableName="payment">
-        <column name="id" type="BIGINT" autoIncrement="true">
-            <constraints primaryKey="true" nullable="false" primaryKeyName="pk_payment"/>
-        </column>
-        <column name="booking_id" type="BIGINT">
-            <constraints nullable="false"/>
-        </column>
-        <column name="amount" type="DECIMAL(10,2)"/>
-        <column name="payment_date" type="TIMESTAMP"/>
-    </createTable>
-    <addForeignKeyConstraint
-            constraintName="fk_payment_booking"
-            baseTableName="payment"
-            baseColumnNames="booking_id"
-            referencedTableName="booking"
-            referencedColumnNames="id"
-            onDelete="CASCADE"/>
-</changeSet>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="create_table_payment" author="irynashvets">
+        <comment>Create the 'payment' table</comment>
+        <createSequence sequenceName="payment_seq" startValue="1"/>
+        <createTable tableName="payment">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_payment"/>
+            </column>
+            <column name="booking_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="DECIMAL(10,2)"/>
+            <column name="payment_date" type="TIMESTAMP"/>
+        </createTable>
+        <addForeignKeyConstraint
+                constraintName="fk_payment_booking"
+                baseTableName="payment"
+                baseColumnNames="booking_id"
+                referencedTableName="booking"
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
+    </changeSet>
+</databaseChangeLog>

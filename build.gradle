@@ -74,6 +74,8 @@ dependencies {
 	implementation libs.commons.lang3
 	implementation libs.commons.io
 	implementation libs.openapi
+	implementation libs.redisson.spring
+	implementation libs.redisson.hibernate53
 
 
 	compileOnly libs.lombok

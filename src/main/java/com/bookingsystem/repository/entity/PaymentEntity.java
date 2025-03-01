@@ -18,6 +18,7 @@ public class PaymentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = COLUMN_ID)
     private Long id;
 
     @ManyToOne

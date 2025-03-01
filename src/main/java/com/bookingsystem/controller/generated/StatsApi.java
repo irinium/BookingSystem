@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 import jakarta.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-01T02:12:11.400043+02:00[Europe/Kiev]", comments = "Generator version: 7.6.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-01T04:21:28.827142+02:00[Europe/Kiev]", comments = "Generator version: 7.6.0")
 @Validated
 @Tag(name = "Statistics", description = "the Statistics API")
 public interface StatsApi {

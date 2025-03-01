@@ -19,6 +19,9 @@ public class PaymentServiceTest {
     @Mock
     private BookingRepository bookingRepository;
 
+    @Mock
+    private EventService eventService;
+
     @InjectMocks
     private PaymentService paymentService;
 

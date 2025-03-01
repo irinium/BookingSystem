@@ -11,5 +11,6 @@
     <changeSet id="add unit data" author="irynashvets">
         <loadData tableName="unit" file="liquibase/data/unitData.csv"/>
         <loadData tableName="booking" file="liquibase/data/bookingData.csv"/>
+        <loadData tableName="user" file="liquibase/data/userData.csv"/>
     </changeSet>
 </databaseChangeLog>

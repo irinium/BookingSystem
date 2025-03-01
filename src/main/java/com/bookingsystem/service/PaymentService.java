@@ -17,7 +17,9 @@ import static com.bookingsystem.utils.ConversionUtils.parseStringToLong;
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PaymentService {
+
     private final BookingRepository bookingRepository;
+    private final EventService eventService;
 
     public MessageResponse emulatePayment(String unitId, String userId) {
         MessageResponse response = new MessageResponse();
@@ -39,11 +41,11 @@ public class PaymentService {
 
         bookingEntity.setPaymentStatus(PaymentStatus.PAID);
         bookingRepository.save(bookingEntity);
+        String msg = String.format("Payment successful for booking id %s.", bookingEntity.getId());
+        eventService.logEvent("PAYMENT_PROCESSED", msg);
         log.info("Payment emulated successfully for booking id {}.", bookingEntity.getId());
-
         response.setMessage("Payment successful");
         response.setStatus(200);
         return response;
     }
-
 }

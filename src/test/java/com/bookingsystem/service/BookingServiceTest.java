@@ -28,6 +28,9 @@ public class BookingServiceTest {
     @Mock
     private BookingRepository bookingRepository;
 
+    @Mock
+    private EventService eventService;
+
     @InjectMocks
     private BookingService bookingService;
 

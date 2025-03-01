@@ -28,8 +28,9 @@ import static com.bookingsystem.utils.ConversionUtils.createResponse;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UnitService {
 
-    private UnitRepository unitRepository;
-    private UnitMapper unitMapper;
+    private final UnitRepository unitRepository;
+    private final UnitMapper unitMapper;
+    private final EventService eventService;
 
     @CacheEvict(value = "availableUnits", allEntries = true)
     public UnitListResponse createUnit(Unit unit) {
@@ -38,6 +39,7 @@ public class UnitService {
             BigDecimal markup = originalCost.multiply(BigDecimal.valueOf(0.15));
             unit.setCost(originalCost.add(markup));
             UnitEntity unitEntity = unitRepository.save(unitMapper.toUnitEntity(unit));
+            eventService.logEvent("UNIT_CREATION", "Unit created with id " + unitEntity.getId());
             return new UnitListResponse()
                     .status(200)
                     .content(List.of(unitMapper.toUnit(unitEntity)))

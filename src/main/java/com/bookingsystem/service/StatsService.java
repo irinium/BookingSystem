@@ -5,7 +5,6 @@ import com.bookingsystem.model.generated.Unit;
 import com.bookingsystem.model.generated.UnitListResponse;
 import com.bookingsystem.repository.UnitRepository;
 import com.bookingsystem.repository.entity.UnitEntity;
-import com.bookingsystem.utils.ConversionUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,20 +22,30 @@ import static com.bookingsystem.utils.ConversionUtils.createResponse;
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class StatsService {
-    private UnitRepository unitRepository;
-    private UnitMapper unitMapper;
+    private final UnitRepository unitRepository;
+    private final UnitMapper unitMapper;
 
     @Cacheable(value = "availableUnits")
     public UnitListResponse getAvailableUnits(Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<UnitEntity> unitPage = unitRepository.getAvailableUnits(pageable);
 
-        if (unitPage != null) {
-            List<Unit> units = unitMapper.toUnitPage(unitPage).getContent();
-            return ConversionUtils.createResponse(units, unitPage, 200);
-        } else {
-            Page<UnitEntity> emptyUnitPage = new PageImpl<>(Collections.emptyList());
-            return createResponse(Collections.emptyList(), emptyUnitPage, 404);
+        if (unitPage == null) {
+            unitPage = new PageImpl<>(Collections.emptyList());
+            return new UnitListResponse()
+                    .content(Collections.emptyList())
+                    .totalElements((int) unitPage.getTotalElements())
+                    .totalPages(unitPage.getTotalPages())
+                    .size(unitPage.getSize())
+                    .status(404);
         }
+
+        List<Unit> units = unitMapper.toUnitPage(unitPage).getContent();
+        return new UnitListResponse()
+                .content(units)
+                .totalElements((int) unitPage.getTotalElements())
+                .totalPages(unitPage.getTotalPages())
+                .size(unitPage.getSize())
+                .status(200);
     }
 }

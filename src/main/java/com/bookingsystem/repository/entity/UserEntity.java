@@ -14,7 +14,9 @@ import static com.bookingsystem.constants.EntityConstants.*;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
+    @SequenceGenerator(name = "user_generator", sequenceName = "user_seq", allocationSize = 1)
+    @Column(name = COLUMN_ID)
     private Long id;
 
     @Column(name = COLUMN_USERNAME, nullable = false, unique = true, length = 50)

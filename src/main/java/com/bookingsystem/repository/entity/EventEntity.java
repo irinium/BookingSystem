@@ -17,6 +17,7 @@ public class EventEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = COLUMN_ID)
     private Long id;
 
     @Column(name = COLUMN_EVENT_TYPE, nullable = false, length = 50)

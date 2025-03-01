@@ -21,7 +21,7 @@ import jakarta.annotation.Generated;
  * BookingRequest
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-01T02:12:11.400043+02:00[Europe/Kiev]", comments = "Generator version: 7.6.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-01T04:21:28.827142+02:00[Europe/Kiev]", comments = "Generator version: 7.6.0")
 public class BookingRequest implements Serializable {
 
   private static final long serialVersionUID = 1L;

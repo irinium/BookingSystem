@@ -6,6 +6,7 @@ import com.bookingsystem.service.StatsService;
 import com.bookingsystem.utils.ConversionUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +22,7 @@ public class StatsController implements StatsApi {
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
             @RequestParam(value = "size", required = false, defaultValue = "10") Integer size) {
         UnitListResponse response = statsService.getAvailableUnits(page, size);
-        return new ResponseEntity<>(response, ConversionUtils.resolveResponseStatus(response, UnitListResponse::getStatus));
+        return new ResponseEntity<>(response, HttpStatusCode.valueOf(response.getStatus()));
     }
 }
 

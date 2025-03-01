@@ -5,6 +5,8 @@ import com.bookingsystem.model.generated.MessageResponse;
 import com.bookingsystem.model.generated.Unit;
 import com.bookingsystem.model.generated.UnitListResponse;
 import com.bookingsystem.repository.entity.UnitEntity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -36,19 +38,17 @@ public class ConversionUtils {
     }
 
     public static MessageResponse createResponse(String e, int status) {
-        return new MessageResponse(){{
-            message(e);
-            setStatus(status);
-        }};
+        return new MessageResponse()
+                .message(e)
+                .status(status);
     }
 
     public static UnitListResponse createResponse(List<Unit> units, Page<UnitEntity> unitPage, int status) {
-        return new UnitListResponse(){{
-            setContent(units);
-            setTotalElements((int) unitPage.getTotalElements());
-            setTotalPages(unitPage.getTotalPages());
-            setSize(unitPage.getSize());
-            setStatus(status);
-        }};
+        return new UnitListResponse()
+                .content(units)
+                .totalElements((int) unitPage.getTotalElements())
+                .totalPages(unitPage.getTotalPages())
+                .size(unitPage.getSize())
+                .status(status);
     }
 }
