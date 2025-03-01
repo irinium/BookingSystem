@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Repository
 public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
@@ -20,4 +21,5 @@ public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
                                  @Param("startDate") LocalDate startDate,
                                  @Param("endDate") LocalDate endDate);
 
+    Optional<BookingEntity> findByUnitIdAndUserId(Long unitId, Long userId);
 }

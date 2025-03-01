@@ -19,12 +19,10 @@ import jakarta.annotation.Generated;
  * Error
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-02-28T03:32:03.521616+02:00[Europe/Kiev]", comments = "Generator version: 7.6.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-01T02:12:11.400043+02:00[Europe/Kiev]", comments = "Generator version: 7.6.0")
 public class Error implements Serializable {
 
   private static final long serialVersionUID = 1L;
-
-  private String type;
 
   private String title;
 
@@ -33,26 +31,6 @@ public class Error implements Serializable {
   private String detail;
 
   private String instance;
-
-  public Error type(String type) {
-    this.type = type;
-    return this;
-  }
-
-  /**
-   * Get type
-   * @return type
-  */
-  
-  @Schema(name = "type", example = "https://example.com/problem", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("type")
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
-  }
 
   public Error title(String title) {
     this.title = title;
@@ -143,8 +121,7 @@ public class Error implements Serializable {
       return false;
     }
     Error error = (Error) o;
-    return Objects.equals(this.type, error.type) &&
-        Objects.equals(this.title, error.title) &&
+    return Objects.equals(this.title, error.title) &&
         Objects.equals(this.status, error.status) &&
         Objects.equals(this.detail, error.detail) &&
         Objects.equals(this.instance, error.instance);
@@ -152,14 +129,13 @@ public class Error implements Serializable {
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, title, status, detail, instance);
+    return Objects.hash(title, status, detail, instance);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Error {\n");
-    sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    detail: ").append(toIndentedString(detail)).append("\n");

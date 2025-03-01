@@ -13,14 +13,16 @@ plugins {
 ext {
 	minimumCoveragePerFile = 0.8
 	filesExcludedFromCoverage = [
-			"**/XssRequestWebFilter.*",
 			"**/*Application.*",
 			"**/config/*Configuration.*",
 			"**/constants/*Constants.*",
+			"**/bootstrap/*Loader.*",
+			"**/controller/generated/**.*",
+			"**/model/generated/**.*",
 			"**/generated/**/*.*",
 			"**/repository/entity/*.*",
-			"**/util/*.*",
-			"**/exception/*Exception*.*",
+			"**/utils/*.*",
+			"**/exception/**.*",
 			"**/domain/**.*",
 			"**/*Builder.*",
 	]
@@ -49,9 +51,8 @@ repositories {
 }
 
 dependencies {
-	implementation(libs.spring.boot.starter.web) {
-		exclude module: "spring-boot-starter-tomcat"
-	}
+	implementation(libs.spring.boot.starter.web)
+	implementation libs.spring.boot.starter.actuator
 	implementation libs.spring.boot.starter.validation
 	implementation libs.spring.boot.starter.cache
 	implementation libs.spring.boot.starter.data.jpa
@@ -70,6 +71,10 @@ dependencies {
 	implementation libs.jackson.databind.nullable
 	implementation libs.javax.annotation.api
 	implementation libs.jackson.datatype.jsr310
+	implementation libs.commons.lang3
+	implementation libs.commons.io
+	implementation libs.openapi
+
 
 	compileOnly libs.lombok
 	compileOnly libs.recordbuildercore
@@ -94,6 +99,7 @@ dependencies {
 	testImplementation libs.assertj.core
 	testCompileOnly libs.lombok
 	testAnnotationProcessor libs.lombok
+	testImplementation libs.h2
 }
 
 // OneApi docs generation
@@ -127,6 +133,10 @@ tasks.compileJava {
 	dependsOn tasks.generateServiceApi
 }
 
+tasks.processResources.dependsOn tasks.generateServiceApi
+tasks.distTar.dependsOn tasks.generateServiceApi, tasks.bootJar, tasks.jar
+tasks.distZip.dependsOn tasks.generateServiceApi, tasks.bootJar, tasks.jar
+
 //Zip
 distributions {
 	main {
@@ -138,7 +148,7 @@ distributions {
 				into 'src'
 			}
 			from('.') {
-				include 'build.gradle', 'README.md', 'Dockerfile'
+				include 'build.gradle', 'README.md'
 			}
 		}
 	}

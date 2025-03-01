@@ -1,0 +1,4 @@
+replicatedServersConfig:
+  password: bitnami
+  nodeAddresses:
+    - "redis://localhost:6379"

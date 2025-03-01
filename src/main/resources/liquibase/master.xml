@@ -4,4 +4,12 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.26.xsd">
 
     <include file="/liquibase/changelog-01-create-unit-table.xml"/>
+    <include file="/liquibase/changelog-02-create-booking-table.xml"/>
+    <include file="/liquibase/changelog-03-create-user-table.xml"/>
+    <include file="/liquibase/changelog-04-create-payment-table.xml"/>
+    <include file="/liquibase/changelog-05-create-event-table.xml"/>
+    <changeSet id="add unit data" author="irynashvets">
+        <loadData tableName="unit" file="liquibase/data/unitData.csv"/>
+        <loadData tableName="booking" file="liquibase/data/bookingData.csv"/>
+    </changeSet>
 </databaseChangeLog>

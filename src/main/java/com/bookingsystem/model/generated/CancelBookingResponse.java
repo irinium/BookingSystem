@@ -19,12 +19,14 @@ import jakarta.annotation.Generated;
  * CancelBookingResponse
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-02-28T03:32:03.521616+02:00[Europe/Kiev]", comments = "Generator version: 7.6.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-02-28T12:59:56.753542+02:00[Europe/Kiev]", comments = "Generator version: 7.6.0")
 public class CancelBookingResponse implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
   private String message;
+
+  private Integer status;
 
   public CancelBookingResponse message(String message) {
     this.message = message;
@@ -46,6 +48,26 @@ public class CancelBookingResponse implements Serializable {
     this.message = message;
   }
 
+  public CancelBookingResponse status(Integer status) {
+    this.status = status;
+    return this;
+  }
+
+  /**
+   * Get status
+   * @return status
+  */
+  
+  @Schema(name = "status", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("status")
+  public Integer getStatus() {
+    return status;
+  }
+
+  public void setStatus(Integer status) {
+    this.status = status;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -55,12 +77,13 @@ public class CancelBookingResponse implements Serializable {
       return false;
     }
     CancelBookingResponse cancelBookingResponse = (CancelBookingResponse) o;
-    return Objects.equals(this.message, cancelBookingResponse.message);
+    return Objects.equals(this.message, cancelBookingResponse.message) &&
+        Objects.equals(this.status, cancelBookingResponse.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(message);
+    return Objects.hash(message, status);
   }
 
   @Override
@@ -68,6 +91,7 @@ public class CancelBookingResponse implements Serializable {
     StringBuilder sb = new StringBuilder();
     sb.append("class CancelBookingResponse {\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
+    sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("}");
     return sb.toString();
   }

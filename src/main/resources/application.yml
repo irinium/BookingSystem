@@ -1,17 +1,18 @@
 spring:
-  jackson:
-    default-property-inclusion: NON_EMPTY
-  profiles:
-    active: dev
+  redis:
+    redisson:
+      file: classpath:redisson.yaml
   application:
     name: BookingSystem
   cache:
     redis:
       enable-statistics: true
+      serialization:
+        value: com.fasterxml.jackson.databind.ObjectMapper
     type: redis
-    cache-names: unit
+    cache-names: availableUnits
   jpa:
-    show-sql: true
+    show-sql: false
     open-in-view: false
     properties:
       hibernate:
@@ -30,32 +31,50 @@ spring:
         cache.use_query_cache: true
         cache.use_minimal_puts: true
         cache.region.factory_class: org.redisson.hibernate.RedissonRegionFactory
-        cache.redisson.config: redisson-dev.yaml
+        cache.redisson.config: redisson.yaml
     hibernate:
       ddl-auto: none
   datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
     hikari:
       auto-commit: false
       connection-timeout: 30000
       maximum-pool-size: 40
       minimum-idle: 5
       max-lifetime: 1800000
-      pool-name: bookingconnect
+      pool-name: booking_system
       leak-detection-threshold: 20000
   liquibase:
     change-log: classpath:liquibase/master.xml
     enabled: true
     drop-first: true
-    contexts: dev
-
-  config:
-    activate:
-      on-profile: dev
+    url: jdbc:postgresql://localhost:5432/postgres
+    user: postgres
+    password: postgres
 
 server:
   port: 8080
   shutdown: graceful
+  address: 127.0.0.1
 
-application:
-  webclient:
-    response-timeout: 2000
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui/index.html
+
+logging:
+  level:
+    root: DEBUG
+    com.bookingsystem: DEBUG
+    org.springframework: DEBUG

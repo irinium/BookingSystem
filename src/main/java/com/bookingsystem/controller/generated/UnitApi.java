@@ -7,16 +7,14 @@ package com.bookingsystem.controller.generated;
 
 import java.math.BigDecimal;
 import com.bookingsystem.model.generated.BookingRequest;
-import com.bookingsystem.model.generated.BookingResponse;
 import com.bookingsystem.model.generated.CancelBookingRequest;
-import com.bookingsystem.model.generated.CancelBookingResponse;
 import org.springframework.format.annotation.DateTimeFormat;
 import com.bookingsystem.model.generated.Error;
-import com.bookingsystem.model.generated.GetUnitsResponse;
 import java.time.LocalDate;
+import com.bookingsystem.model.generated.MessageResponse;
 import com.bookingsystem.model.generated.PaymentRequest;
-import com.bookingsystem.model.generated.PaymentResponse;
 import com.bookingsystem.model.generated.Unit;
+import com.bookingsystem.model.generated.UnitListResponse;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -43,7 +41,7 @@ import java.util.Map;
 import java.util.Optional;
 import jakarta.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-02-28T03:32:03.521616+02:00[Europe/Kiev]", comments = "Generator version: 7.6.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-01T02:12:11.400043+02:00[Europe/Kiev]", comments = "Generator version: 7.6.0")
 @Validated
 @Tag(name = "Booking", description = "the Booking API")
 public interface UnitApi {
@@ -64,7 +62,7 @@ public interface UnitApi {
         tags = { "Booking" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Booking successful response", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = BookingResponse.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = MessageResponse.class))
             }),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
@@ -84,7 +82,7 @@ public interface UnitApi {
         consumes = { "application/json" }
     )
     
-    ResponseEntity<BookingResponse> bookUnit(
+    ResponseEntity<MessageResponse> bookUnit(
         @Parameter(name = "unitId", description = "ID of the Unit to book", required = true, in = ParameterIn.PATH) @PathVariable("unitId") String unitId,
         @Parameter(name = "BookingRequest", description = "", required = true) @Valid @RequestBody BookingRequest bookingRequest
     );
@@ -106,7 +104,7 @@ public interface UnitApi {
         tags = { "Booking" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Cancellation successful response", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = CancelBookingResponse.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = MessageResponse.class))
             }),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
@@ -126,7 +124,7 @@ public interface UnitApi {
         consumes = { "application/json" }
     )
     
-    ResponseEntity<CancelBookingResponse> cancelBooking(
+    ResponseEntity<MessageResponse> cancelBooking(
         @Parameter(name = "unitId", description = "ID of the Unit whose booking is to be cancelled", required = true, in = ParameterIn.PATH) @PathVariable("unitId") String unitId,
         @Parameter(name = "CancelBookingRequest", description = "", required = true) @Valid @RequestBody CancelBookingRequest cancelBookingRequest
     );
@@ -145,7 +143,7 @@ public interface UnitApi {
         tags = { "Units" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Unit created successfully", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Unit.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = UnitListResponse.class))
             }),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
@@ -159,7 +157,7 @@ public interface UnitApi {
         consumes = { "application/json" }
     )
     
-    ResponseEntity<Unit> createUnit(
+    ResponseEntity<UnitListResponse> createUnit(
         @Parameter(name = "Unit", description = "", required = true) @Valid @RequestBody Unit unit
     );
 
@@ -180,7 +178,7 @@ public interface UnitApi {
         tags = { "Payment" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Payment processed successfully", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = PaymentResponse.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = MessageResponse.class))
             }),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
@@ -200,7 +198,7 @@ public interface UnitApi {
         consumes = { "application/json" }
     )
     
-    ResponseEntity<PaymentResponse> emulatePayment(
+    ResponseEntity<MessageResponse> emulatePayment(
         @Parameter(name = "unitId", description = "ID of the Unit for which payment is made", required = true, in = ParameterIn.PATH) @PathVariable("unitId") String unitId,
         @Parameter(name = "PaymentRequest", description = "", required = true) @Valid @RequestBody PaymentRequest paymentRequest
     );
@@ -227,7 +225,7 @@ public interface UnitApi {
         tags = { "Units" },
         responses = {
             @ApiResponse(responseCode = "200", description = "A paginated list of Units", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = GetUnitsResponse.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = UnitListResponse.class))
             }),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
@@ -246,7 +244,7 @@ public interface UnitApi {
         produces = { "application/json" }
     )
     
-    ResponseEntity<GetUnitsResponse> getUnits(
+    ResponseEntity<UnitListResponse> getUnits(
         @Parameter(name = "startDate", description = "Booking start date filter (YYYY-MM-DD)", in = ParameterIn.QUERY) @Valid @RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
         @Parameter(name = "endDate", description = "Booking end date filter (YYYY-MM-DD)", in = ParameterIn.QUERY) @Valid @RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
         @Parameter(name = "minCost", description = "Minimum cost filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "minCost", required = false) BigDecimal minCost,

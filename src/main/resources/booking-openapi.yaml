@@ -6,7 +6,7 @@ info:
 
 servers:
   - url: http://localhost:8080/api
-    description: Local development server
+    description: Local server
 
 paths:
   /unit:
@@ -27,7 +27,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Unit'
+                $ref: '#/components/schemas/UnitListResponse'
         "400":
           $ref: '#/components/responses/BadRequest'
 
@@ -92,7 +92,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetUnitsResponse'
+                $ref: '#/components/schemas/UnitListResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -124,7 +124,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BookingResponse'
+                $ref: '#/components/schemas/MessageResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -160,7 +160,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CancelBookingResponse'
+                $ref: '#/components/schemas/MessageResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -192,7 +192,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaymentResponse'
+                $ref: '#/components/schemas/MessageResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -205,14 +205,28 @@ paths:
         - Statistics
       summary: Get the count of available Units for booking
       operationId: getAvailableUnitsCount
+      parameters:
+        - name: page
+          in: query
+          description: Page number for pagination
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            default: 10
       responses:
         '200':
           description: Returns the count of available Units
           content:
             application/json:
               schema:
-                type: integer
-                example: 42
+                $ref: '#/components/schemas/UnitListResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -267,7 +281,7 @@ components:
           type: string
           description: ID of the user making the payment
           example: 1001
-    GetUnitsResponse:
+    UnitListResponse:
       type: object
       properties:
         content:
@@ -283,23 +297,20 @@ components:
         size:
           type: integer
           example: 10
-    PaymentResponse:
+        status:
+          type: integer
+        message:
+          type: string
+          example: Unit successfully saved
+    MessageResponse:
       type: object
       properties:
         message:
           type: string
           example: Payment successful
-    BookingResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Booking successful
-    CancelBookingResponse:
-      type: object
-      properties:
-        message:
-          type: string
+        status:
+          type: integer
+
     Unit:
       type: object
       properties:
@@ -329,9 +340,6 @@ components:
     Error:
       type: object
       properties:
-        type:
-          type: string
-          example: "https://example.com/problem"
         title:
           type: string
           example: "Bad Request"

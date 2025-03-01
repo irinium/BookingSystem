@@ -19,12 +19,14 @@ import jakarta.annotation.Generated;
  * PaymentResponse
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-02-28T03:32:03.521616+02:00[Europe/Kiev]", comments = "Generator version: 7.6.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-02-28T12:59:56.753542+02:00[Europe/Kiev]", comments = "Generator version: 7.6.0")
 public class PaymentResponse implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
   private String message;
+
+  private Integer status;
 
   public PaymentResponse message(String message) {
     this.message = message;
@@ -46,6 +48,26 @@ public class PaymentResponse implements Serializable {
     this.message = message;
   }
 
+  public PaymentResponse status(Integer status) {
+    this.status = status;
+    return this;
+  }
+
+  /**
+   * Get status
+   * @return status
+  */
+  
+  @Schema(name = "status", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("status")
+  public Integer getStatus() {
+    return status;
+  }
+
+  public void setStatus(Integer status) {
+    this.status = status;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -55,12 +77,13 @@ public class PaymentResponse implements Serializable {
       return false;
     }
     PaymentResponse paymentResponse = (PaymentResponse) o;
-    return Objects.equals(this.message, paymentResponse.message);
+    return Objects.equals(this.message, paymentResponse.message) &&
+        Objects.equals(this.status, paymentResponse.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(message);
+    return Objects.hash(message, status);
   }
 
   @Override
@@ -68,6 +91,7 @@ public class PaymentResponse implements Serializable {
     StringBuilder sb = new StringBuilder();
     sb.append("class PaymentResponse {\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
+    sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public interface UnitRepository extends JpaRepository<UnitEntity, Long> {
@@ -30,12 +31,6 @@ public interface UnitRepository extends JpaRepository<UnitEntity, Long> {
             @Param("endDate") LocalDate endDate,
             Pageable pageable);
 
-
-    /**
-     * Counts the number of available Units.
-     *
-     * @return the count of available Units.
-     */
-    @Query("SELECT COUNT(u) FROM UnitEntity u WHERE u.available = true")
-    long countAvailableUnits();
+    @Query("SELECT u FROM UnitEntity u WHERE u.available = true")
+    Page<UnitEntity> getAvailableUnits(Pageable pageable);
 }

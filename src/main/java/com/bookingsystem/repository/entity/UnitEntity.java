@@ -14,6 +14,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 import static com.bookingsystem.constants.EntityConstants.*;
 
 @Entity
@@ -41,7 +43,7 @@ public class UnitEntity {
     private Integer floor;
 
     @Column(name = COLUMN_COST)
-    private Integer cost;
+    private BigDecimal cost;
 
     @Column(name = COLUMN_DESCRIPTION)
     private String description;

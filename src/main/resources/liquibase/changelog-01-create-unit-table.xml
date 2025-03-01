@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="create-unit-sequence" author="irynashvets">
+        <createSequence sequenceName="unit_seq" startValue="11" />
+    </changeSet>
+    <changeSet id="create_table_unit" author="irynashvets">
+        <comment>Create the 'unit' table based on the UnitEntity</comment>
+        <createTable tableName="unit">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_unit"/>
+            </column>
+            <column name="number_of_rooms" type="INTEGER"/>
+            <column name="accommodation_type" type="VARCHAR(20)"/>
+            <column name="floor" type="INTEGER"/>
+            <column name="cost" type="DECIMAL(10,2)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="available" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

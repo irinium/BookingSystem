@@ -35,4 +35,7 @@ public class BookingEntity {
 
     @Column(name = COLUMN_USER_ID, nullable = false)
     private Long userId;
+
+    @Column(name = COLUMN_PAYMENT_STATUS)
+    private PaymentStatus paymentStatus;
 }

@@ -9,7 +9,7 @@ volumes:
 services:
   postgres:
     image: postgres:16.1-alpine
-    container_name: postgres
+    container_name: booking-postgres
     user: postgres
     restart: unless-stopped
     networks:
@@ -28,7 +28,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
   redis:
     image: bitnami/redis:7.0.11
-    container_name: redis
+    container_name: booking-redis
     user: root
     networks:
       - cache

@@ -6,6 +6,7 @@
 package com.bookingsystem.controller.generated;
 
 import com.bookingsystem.model.generated.Error;
+import com.bookingsystem.model.generated.UnitListResponse;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -32,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 import jakarta.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-02-28T03:32:03.521616+02:00[Europe/Kiev]", comments = "Generator version: 7.6.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-03-01T02:12:11.400043+02:00[Europe/Kiev]", comments = "Generator version: 7.6.0")
 @Validated
 @Tag(name = "Statistics", description = "the Statistics API")
 public interface StatsApi {
@@ -40,6 +41,8 @@ public interface StatsApi {
     /**
      * GET /stats/available-units : Get the count of available Units for booking
      *
+     * @param page Page number for pagination (optional, default to 0)
+     * @param size Number of items per page (optional, default to 10)
      * @return Returns the count of available Units (status code 200)
      *         or Bad Request (status code 400)
      *         or Resource not found (status code 404)
@@ -51,7 +54,7 @@ public interface StatsApi {
         tags = { "Statistics" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Returns the count of available Units", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Integer.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = UnitListResponse.class))
             }),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Error.class))
@@ -70,8 +73,9 @@ public interface StatsApi {
         produces = { "application/json" }
     )
     
-    ResponseEntity<Integer> getAvailableUnitsCount(
-        
+    ResponseEntity<UnitListResponse> getAvailableUnitsCount(
+        @Parameter(name = "page", description = "Page number for pagination", in = ParameterIn.QUERY) @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+        @Parameter(name = "size", description = "Number of items per page", in = ParameterIn.QUERY) @Valid @RequestParam(value = "size", required = false, defaultValue = "10") Integer size
     );
 
 }
