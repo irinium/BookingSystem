@@ -149,6 +149,12 @@ distributions {
 			from('src') {
 				into 'src'
 			}
+			from('scripts') {
+				into 'scripts'
+			}
+			from('gradle') {
+				into 'gradle'
+			}
 			from('.') {
 				include 'build.gradle', 'README.md'
 			}
